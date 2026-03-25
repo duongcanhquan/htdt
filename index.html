@@ -62,11 +62,14 @@
         .secret-admin-login:hover { width: 80px; height: 80px; background: rgba(255, 255, 255, 0.9); box-shadow: 2px -2px 10px rgba(0,0,0,0.15); }
         .secret-admin-login i { color: #1e293b; font-size: 1.2rem; opacity: 0; transition: 0.3s; transform: translate(-10px, 10px); }
         .secret-admin-login:hover i { opacity: 1; transform: translate(5px, -5px); }
+
+        /* Nút xem ảnh/video doanh nghiệp */
+        .btn-media { background: #fffbeb; color: #b45309; border: 1px solid #fde68a; border-radius: 10px; font-weight: 600; padding: 8px 15px; font-size: 0.85rem; transition: 0.3s; width: 100%; margin-top: 10px;}
+        .btn-media:hover { background: #fef3c7; border-color: #fcd34d; }
     </style>
 </head>
 <body>
 
-    <!-- Thông báo chạy chữ -->
     <div class="announcement-bar">
         <div class="marquee-content" id="topAnnouncement">
             <i class="fas fa-bullhorn me-2"></i> Đang tải thông báo từ hệ thống...
@@ -118,7 +121,7 @@
                 
                 <div id="loadingJobs" class="text-center text-white py-5 my-5">
                     <i class="fas fa-spinner fa-spin fa-3x mb-3"></i>
-                    <h5>Đang tải dữ liệu thực tập & việc làm...</h5>
+                    <h5>Đang kết nối hệ thống nhà trường...</h5>
                 </div>
                 
                 <div id="jobContainer"></div>
@@ -127,22 +130,26 @@
         </div>
     </div>
 
-    <!-- Modal Chi tiết Công việc -->
     <div class="modal fade" id="modalJobDetail" tabindex="-1">
         <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
             <div class="modal-content modal-content-glass">
                 <div class="modal-header border-bottom p-4"><h5 class="fw-bold text-dark m-0" id="mJTitle" style="line-height: 1.4;">--</h5><button class="btn-close" data-bs-dismiss="modal"></button></div>
                 <div class="modal-body p-4">
-                    <div class="d-flex justify-content-between align-items-start mb-3"><h6 class="text-primary fw-bold fs-5 m-0" id="mJCty"><i class="fas fa-building me-2"></i>--</h6><span id="mJType" class="badge bg-success shadow-sm">--</span></div>
+                    <div class="d-flex justify-content-between align-items-start mb-1"><h6 class="text-primary fw-bold fs-5 m-0" id="mJCty"><i class="fas fa-building me-2"></i>--</h6><span id="mJType" class="badge bg-success shadow-sm">--</span></div>
+                    
+                    <div id="mJMediaBox" class="d-none mb-3">
+                        <button class="btn-media" id="btnViewMedia" onclick="openMediaLink()"><i class="fas fa-photo-video me-2"></i>Xem ảnh/Video doanh nghiệp</button>
+                    </div>
+
                     <div class="row g-3 mb-4 bg-light p-3 rounded-4 border">
-                        <div class="col-md-4 col-12 d-flex align-items-center"><i class="fas fa-map-marker-alt text-danger fa-lg me-3"></i><div><small class="text-muted d-block fw-bold" style="font-size: 0.7rem;">ĐỊA ĐIỂM</small><span id="mJLoc" class="text-secondary fw-bold small"></span></div></div>
-                        <div class="col-md-4 col-6 d-flex align-items-center"><i class="fas fa-money-bill-wave text-success fa-lg me-3"></i><div><small class="text-muted d-block fw-bold" style="font-size: 0.7rem;">MỨC LƯƠNG</small><span id="mJSal" class="text-secondary fw-bold small"></span></div></div>
-                        <div class="col-md-4 col-6 d-flex align-items-center"><i class="fas fa-clock text-info fa-lg me-3"></i><div><small class="text-muted d-block fw-bold" style="font-size: 0.7rem;">HẠN NỘP</small><span id="mJDead" class="text-secondary fw-bold small"></span></div></div>
+                        <div class="col-md-4 col-12 d-flex align-items-center"><i class="fas fa-map-marker-alt text-danger fa-lg me-3"></i><div><small class="text-muted d-block fw-bold" style="font-size: 0.7rem;">ĐỊA ĐIỂM (Cột D)</small><span id="mJLoc" class="text-secondary fw-bold small"></span></div></div>
+                        <div class="col-md-4 col-6 d-flex align-items-center"><i class="fas fa-money-bill-wave text-success fa-lg me-3"></i><div><small class="text-muted d-block fw-bold" style="font-size: 0.7rem;">MỨC LƯƠNG (Cột H)</small><span id="mJSal" class="text-secondary fw-bold small"></span></div></div>
+                        <div class="col-md-4 col-6 d-flex align-items-center"><i class="fas fa-clock text-info fa-lg me-3"></i><div><small class="text-muted d-block fw-bold" style="font-size: 0.7rem;">HẠN NỘP (Cột J)</small><span id="mJDead" class="text-secondary fw-bold small"></span></div></div>
                     </div>
                     <div class="row g-4">
-                        <div class="col-md-6"><h6 class="fw-bold text-dark mb-3"><i class="fas fa-align-left me-2 text-primary"></i>Mô tả công việc</h6><div class="bg-white p-3 rounded-4 small text-secondary border" id="mJDesc" style="white-space:pre-line; line-height: 1.6;"></div></div>
-                        <div class="col-md-6"><h6 class="fw-bold text-dark mb-3"><i class="fas fa-clipboard-check me-2 text-success"></i>Yêu cầu ứng viên</h6><div class="bg-white p-3 rounded-4 small text-secondary border" id="mJReq" style="white-space:pre-line; line-height: 1.6;"></div></div>
-                        <div class="col-12" id="mJNoteBox"><div class="alert alert-warning small border-0 shadow-sm m-0"><i class="fas fa-lightbulb me-2"></i><b>Lưu ý:</b> <span id="mJNote"></span></div></div>
+                        <div class="col-md-6"><h6 class="fw-bold text-dark mb-3"><i class="fas fa-align-left me-2 text-primary"></i>Mô tả công việc (Cột F)</h6><div class="bg-white p-3 rounded-4 small text-secondary border" id="mJDesc" style="white-space:pre-line; line-height: 1.6;"></div></div>
+                        <div class="col-md-6"><h6 class="fw-bold text-dark mb-3"><i class="fas fa-clipboard-check me-2 text-success"></i>Yêu cầu ứng viên (Cột G)</h6><div class="bg-white p-3 rounded-4 small text-secondary border" id="mJReq" style="white-space:pre-line; line-height: 1.6;"></div></div>
+                        <div class="col-12" id="mJNoteBox"><div class="alert alert-warning small border-0 shadow-sm m-0"><i class="fas fa-lightbulb me-2"></i><b>Lưu ý (Cột N):</b> <span id="mJNote"></span></div></div>
                     </div>
                 </div>
                 <div class="modal-footer border-top p-4 d-block text-center bg-light" style="border-radius: 0 0 20px 20px;">
@@ -152,8 +159,8 @@
         </div>
     </div>
 
-    <!-- NẾP GẤP SÁCH ẨN GÓC TRÁI DƯỚI (CỔNG ADMIN) -->
-    <div class="secret-admin-login" onclick="goToStaff()" title="Cổng Dành Cho Cán Bộ / Doanh Nghiệp">
+    
+<div class="secret-admin-login" onclick="goToStaff()" title="Cổng Dành Cho Cán Bộ / Doanh Nghiệp">
         <i class="fas fa-user-shield"></i>
     </div>
 
@@ -171,13 +178,17 @@
         var currentTab = 'intern'; 
         var currentPage = 1; 
         var jobsPerPage = 10; 
+        var currentMediaLink = ""; // Lưu link ảnh/video của job đang xem
 
-        // Hàm hỗ trợ điều hướng sang Google Apps Script
         function goToLogin() { window.location.href = GAS_API_URL + "?page=login"; }
         function goToStaff() { window.location.href = GAS_API_URL + "?page=staff"; }
 
+        // Hàm mở link media
+        function openMediaLink() {
+            if(currentMediaLink) window.open(currentMediaLink, '_blank');
+        }
+
         $(document).ready(function() {
-            // GỌI API FETCH THAY VÌ google.script.run
             fetch(GAS_API_URL + "?action=getJobs")
                 .then(response => response.json())
                 .then(res => {
@@ -206,7 +217,7 @@
         function applyFilters() {
             var kw = $('#searchKeyword').val().toLowerCase(); var m = $('#filterMajor').val();
             filteredJobs = allJobs.filter(j => {
-                var matchKw = j.tieuDe.toLowerCase().includes(kw) || j.tenCongTy.toLowerCase().includes(kw);
+                var matchKw = (j.tieuDe || "").toLowerCase().includes(kw) || (j.tenCongTy || "").toLowerCase().includes(kw);
                 var matchMajor = (m === "" || (j.nganh || "").includes(m) || j.nganh === "Chung" || j.nganh === "Tất cả ngành");
                 var matchTab = false;
                 let loaiHinh = (j.loaiHinh || "").toLowerCase();
@@ -233,6 +244,7 @@
                 let hotStyle = job.isHot ? 'border-left: 5px solid #ef4444; background: linear-gradient(to right, #ffffff, #fef2f2);' : 'border-left: 5px solid transparent;';
                 let originalIndex = allJobs.findIndex(j => j.maJob === job.maJob);
 
+                // Cập nhật hiển thị Địa điểm (Cột D) chính xác
                 html += `
                     <div class="job-card-compact shadow-sm" style="${hotStyle}" onclick="openJobDetail(${originalIndex})">
                         <div class="d-flex justify-content-between align-items-start mb-2">
@@ -260,9 +272,23 @@
         window.openJobDetail = function(idx) {
             var job = allJobs[idx];
             $('#mJTitle').text(job.tieuDe); $('#mJCty').html(`<i class="fas fa-building me-2"></i>${job.tenCongTy}`); 
-            $('#mJLoc').text(job.diaDiem || "Cập nhật sau"); $('#mJSal').text(job.mucLuong || "Thỏa thuận"); 
-            $('#mJDead').text(job.hanNop); $('#mJType').text(job.loaiHinh);
-            $('#mJDesc').text(job.moTa || "Chưa cập nhật mô tả."); $('#mJReq').text(job.yeuCau || "Chưa cập nhật yêu cầu.");
+            
+            // Khớp chính xác các trường dữ liệu theo cột
+            $('#mJLoc').text(job.diaDiem || "Cập nhật sau"); // Cột D -> Địa điểm
+            $('#mJSal').text(job.mucLuong || "Thỏa thuận"); // Cột H -> Mức lương
+            $('#mJDead').text(job.hanNop); // Cột J -> Hạn nộp
+            $('#mJType').text(job.loaiHinh);
+            $('#mJDesc').text(job.moTa || "Chưa cập nhật mô tả."); // Cột F -> Mô tả
+            $('#mJReq').text(job.yeuCau || "Chưa cập nhật yêu cầu."); // Cột G -> Yêu cầu
+            
+            // Xử lý link Ảnh/Video (Cột L)
+            currentMediaLink = job.linkAnhVideo || "";
+            if(currentMediaLink) {
+                $('#mJMediaBox').removeClass('d-none');
+            } else {
+                $('#mJMediaBox').addClass('d-none');
+            }
+
             if(job.luuY) { $('#mJNote').text(job.luuY); $('#mJNoteBox').removeClass('d-none'); } else $('#mJNoteBox').addClass('d-none'); 
             new bootstrap.Modal(document.getElementById('modalJobDetail')).show();
         }
