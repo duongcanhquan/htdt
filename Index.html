@@ -2,55 +2,270 @@
 <html lang="vi">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cổng Thông tin thực tập & Việc làm- VietMy College</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Cổng Việc Làm & Thực Tập | VietMy College</title>
     
-    <link rel="icon" href="https://raw.githubusercontent.com/duongcanhquan/image/main/Logo%20Cao%20%C4%91%E1%BA%B3ng%20Vi%E1%BB%87t%20M%E1%BB%B9%20-%20b%E1%BA%A3n%20chu%E1%BA%A9n%202025-02.png" type="image/png">
-
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    
     <style>
-        /* CSS tối giản để load cực nhanh */
-        body {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            margin: 0;
-            background-color: #f8f9fa;
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-            overflow: hidden;
+        body { 
+            background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab); 
+            background-size: 400% 400%; 
+            animation: gradientBG 15s ease infinite; 
+            font-family: 'Montserrat', sans-serif; 
+            min-height: 100vh; 
+            color: #334155; 
+            padding-bottom: 30px; 
         }
-        .loader-box { text-align: center; }
-        /* Vòng xoay Loading */
-        .spinner {
-            width: 40px;
-            height: 40px;
-            border: 4px solid #e9ecef;
-            border-top: 4px solid #0d6efd; /* Màu xanh thương hiệu */
-            border-radius: 50%;
-            animation: spin 0.8s linear infinite;
-            margin: 0 auto 15px auto;
+        @keyframes gradientBG { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
+
+        .announcement-bar { background: rgba(255, 224, 102, 0.95); color: #b45309; padding: 8px 0; font-weight: 600; font-size: 0.85rem; border-bottom: 1px solid rgba(255,255,255,0.3); overflow: hidden; white-space: nowrap; }
+        .marquee-content { display: inline-block; padding-left: 100%; animation: marquee 20s linear infinite; }
+        @keyframes marquee { 0% { transform: translate(0, 0); } 100% { transform: translate(-100%, 0); } }
+
+        .glass-panel { background: rgba(255, 255, 255, 0.95); border-radius: 16px; box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15); padding: 25px; border: 1px solid rgba(255, 255, 255, 0.8); backdrop-filter: blur(15px); }
+        .form-glass { border-radius: 10px; border: 1px solid #cbd5e1; padding: 12px 15px; width: 100%; font-weight: 500; font-size: 0.9rem; background: #f8fafc; transition: all 0.3s ease; }
+        .form-glass:focus { border-color: #667eea; outline: none; background: #fff; box-shadow: 0 0 0 4px rgba(102,126,234,0.15); }
+        
+        .btn-login-sv { background: linear-gradient(135deg, #667eea, #764ba2); color: white; border-radius: 12px; font-weight: 700; padding: 12px 15px; width: 100%; border: none; transition: all 0.3s ease; font-size: 0.95rem; box-shadow: 0 6px 20px rgba(118, 75, 162, 0.3); }
+        .btn-login-sv:hover { transform: translateY(-2px); box-shadow: 0 8px 25px rgba(118, 75, 162, 0.5); color: #fff;}
+
+        .nav-pills { flex-wrap: nowrap; overflow-x: auto; padding-bottom: 5px; }
+        .nav-pills::-webkit-scrollbar { display: none; }
+        .nav-pills .nav-link { color: #475569; background: rgba(255,255,255,0.8); border: 1px solid #cbd5e1; border-radius: 12px; padding: 12px 25px; margin-right: 10px; font-weight: 700; transition: 0.3s; white-space: nowrap; }
+        .nav-pills .nav-link.active { background: linear-gradient(135deg, #10b981 0%, #059669 100%); color: white; border-color: transparent; box-shadow: 0 6px 15px rgba(16, 185, 129, 0.3); }
+
+        .job-card-compact { background: #fff; border-radius: 14px; padding: 15px 20px; margin-bottom: 12px; border: 1px solid #e2e8f0; transition: all 0.25s ease; cursor: pointer; position: relative; }
+        .job-card-compact:not(.expired):hover { transform: translateY(-3px); box-shadow: 0 10px 20px rgba(0,0,0,0.08); border-color: #667eea; }
+        .job-card-compact.expired { background: #f8fafc; opacity: 0.6; filter: grayscale(100%); cursor: not-allowed; }
+        
+        .badge-type { font-size: 0.65rem; padding: 4px 8px; border-radius: 6px; font-weight: 700; }
+        .bg-intern { background: #e0f2fe; color: #0284c7; border: 1px solid #bae6fd; } 
+        .bg-job { background: #dcfce7; color: #166534; border: 1px solid #bbf7d0; } 
+        .badge-major { font-size: 0.65rem; font-weight: 600; padding: 4px 8px; border-radius: 6px; }
+        
+        .page-btn { border: 1px solid #e2e8f0; background: rgba(255,255,255,0.9); color: #475569; width: 36px; height: 36px; border-radius: 8px; font-weight: 700; transition: 0.2s; font-size: 0.9rem; margin: 0 3px; }
+        .page-btn:hover { background: #f1f5f9; }
+        .page-btn.active { background: linear-gradient(135deg, #667eea, #764ba2); color: white; border-color: transparent;}
+        
+        .modal-content-glass { border-radius: 20px; background: rgba(255,255,255,0.98); backdrop-filter: blur(15px); border: none; box-shadow: 0 20px 50px rgba(0,0,0,0.2); }
+
+        .secret-admin-login {
+            position: fixed; bottom: 0; left: 0; width: 50px; height: 50px;
+            background: rgba(255, 255, 255, 0.15); clip-path: polygon(0 0, 0% 100%, 100% 100%);
+            backdrop-filter: blur(5px); z-index: 10000; cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+            display: flex; align-items: flex-end; justify-content: flex-start; padding: 8px 0 0 8px;
         }
-        p { color: #6c757d; font-size: 14px; margin: 0; }
-        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        .secret-admin-login:hover { width: 80px; height: 80px; background: rgba(255, 255, 255, 0.9); box-shadow: 2px -2px 10px rgba(0,0,0,0.15); }
+        .secret-admin-login i { color: #1e293b; font-size: 1.2rem; opacity: 0; transition: 0.3s; transform: translate(-10px, 10px); }
+        .secret-admin-login:hover i { opacity: 1; transform: translate(5px, -5px); }
     </style>
-
-    <script>
-        // --- LINK PROJECT 1 CỦA BẠN ---
-        var targetUrl = "https://script.google.com/macros/s/AKfycbyA5S81EIeEK_ymFUr6ZKPTgO5lk_jvSwbjwS2KDPwydEtS2SwjIkOiRPqymzuiwAlN/exec";
-
-        // CHUYỂN HƯỚNG SIÊU TỐC
-        // Chạy ngay lập tức, không lưu trang này vào lịch sử (Back sẽ không bị quay lại đây)
-        window.location.replace(targetUrl);
-    </script>
 </head>
 <body>
-    <div class="loader-box">
-        <div class="spinner"></div>
-        <p>Đang kết nối hệ thống...</p>
+
+    <!-- Thông báo chạy chữ -->
+    <div class="announcement-bar">
+        <div class="marquee-content" id="topAnnouncement">
+            <i class="fas fa-bullhorn me-2"></i> Đang tải thông báo từ hệ thống...
+        </div>
     </div>
 
-    <noscript>
-        <meta http-equiv="refresh" content="0;url=https://script.google.com/macros/s/AKfycbyA5S81EIeEK_ymFUr6ZKPTgO5lk_jvSwbjwS2KDPwydEtS2SwjIkOiRPqymzuiwAlN/exec">
-    </noscript>
+    <div class="container-fluid mt-4 px-md-4">
+        <div class="row g-4">
+            
+            <div class="col-lg-3 col-md-4">
+                <button class="btn btn-light w-100 d-lg-none mb-2 fw-bold text-primary shadow-sm" type="button" data-bs-toggle="collapse" data-bs-target="#filterSidebar">
+                    <i class="fas fa-filter me-2"></i> Mở Menu Tìm Kiếm
+                </button>
+
+                <div class="glass-panel collapse d-lg-block sticky-lg-top" id="filterSidebar" style="top: 20px;">
+                    <div class="text-center mb-4 pb-3 border-bottom">
+                        <img src="https://github.com/duongcanhquan/image/blob/main/Logo%20Cao%20%C4%91a%CC%86%CC%89ng%20Vie%CC%A3%CC%82t%20My%CC%83%20-%20ba%CC%89n%20chua%CC%82%CC%89n%202025-01.png?raw=true" alt="Logo VietMy" style="height: 100px; max-width: 100%; object-fit: contain;">
+                        <h5 class="fw-bold text-primary mt-3 mb-0" style="line-height: 1.4;">CƠ HỘI THỰC TẬP /<br>NGHỀ NGHIỆP</h5>
+                    </div>
+                    
+                    <h6 class="fw-bold text-dark mb-3"><i class="fas fa-search me-2"></i>Trình Lọc</h6>
+                    <div class="position-relative mb-3">
+                        <i class="fas fa-search position-absolute text-muted" style="top: 50%; transform: translateY(-50%); left: 15px;"></i>
+                        <input type="text" id="searchKeyword" class="form-glass m-0 border-secondary" style="padding-left: 40px;" placeholder="Tên công ty, vị trí...">
+                    </div>
+                    <div class="mb-4">
+                        <label class="small fw-bold text-muted ms-1 mb-1">Ngành học ưu tiên</label>
+                        <select class="form-glass m-0" id="filterMajor">
+                            <option value="">-- Tất cả ngành --</option>
+                        </select>
+                    </div>
+                    
+                    <button class="btn btn-outline-secondary w-100 fw-bold btn-sm mb-4 py-2 rounded-3" id="btnResetFilter"><i class="fas fa-undo-alt me-1"></i> Xóa bộ lọc</button>
+                    
+                    <button class="btn-login-sv mt-2" onclick="goToLogin()"><i class="fas fa-sign-in-alt me-2"></i>Đăng nhập để ứng tuyển</button>
+                </div>
+            </div>
+
+            <div class="col-lg-9 col-md-8">
+                <ul class="nav nav-pills mb-3" id="jobTabs">
+                    <li class="nav-item"><button class="nav-link active" data-type="intern" onclick="switchTab('intern', this)"><i class="fas fa-user-graduate me-2"></i> THỰC TẬP</button></li>
+                    <li class="nav-item"><button class="nav-link" data-type="job" onclick="switchTab('job', this)"><i class="fas fa-briefcase me-2"></i> VIỆC LÀM</button></li>
+                </ul>
+
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <h6 class="text-white m-0 text-shadow" style="font-weight: 500;" id="tabDescription">Danh sách các chương trình Thực tập</h6>
+                    <span class="badge bg-white text-dark shadow-sm py-2 px-3 rounded-pill fs-6" id="totalJobCount">Đang tải...</span>
+                </div>
+                
+                <div id="loadingJobs" class="text-center text-white py-5 my-5">
+                    <i class="fas fa-spinner fa-spin fa-3x mb-3"></i>
+                    <h5>Đang kết nối hệ thống nhà trường...</h5>
+                </div>
+                
+                <div id="jobContainer"></div>
+                <div class="d-flex justify-content-center flex-wrap gap-2 mt-4" id="paginationContainer"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Chi tiết Công việc -->
+    <div class="modal fade" id="modalJobDetail" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
+            <div class="modal-content modal-content-glass">
+                <div class="modal-header border-bottom p-4"><h5 class="fw-bold text-dark m-0" id="mJTitle" style="line-height: 1.4;">--</h5><button class="btn-close" data-bs-dismiss="modal"></button></div>
+                <div class="modal-body p-4">
+                    <div class="d-flex justify-content-between align-items-start mb-3"><h6 class="text-primary fw-bold fs-5 m-0" id="mJCty"><i class="fas fa-building me-2"></i>--</h6><span id="mJType" class="badge bg-success shadow-sm">--</span></div>
+                    <div class="row g-3 mb-4 bg-light p-3 rounded-4 border">
+                        <div class="col-md-4 col-12 d-flex align-items-center"><i class="fas fa-map-marker-alt text-danger fa-lg me-3"></i><div><small class="text-muted d-block fw-bold" style="font-size: 0.7rem;">ĐỊA ĐIỂM</small><span id="mJLoc" class="text-secondary fw-bold small"></span></div></div>
+                        <div class="col-md-4 col-6 d-flex align-items-center"><i class="fas fa-money-bill-wave text-success fa-lg me-3"></i><div><small class="text-muted d-block fw-bold" style="font-size: 0.7rem;">MỨC LƯƠNG</small><span id="mJSal" class="text-secondary fw-bold small"></span></div></div>
+                        <div class="col-md-4 col-6 d-flex align-items-center"><i class="fas fa-clock text-info fa-lg me-3"></i><div><small class="text-muted d-block fw-bold" style="font-size: 0.7rem;">HẠN NỘP</small><span id="mJDead" class="text-secondary fw-bold small"></span></div></div>
+                    </div>
+                    <div class="row g-4">
+                        <div class="col-md-6"><h6 class="fw-bold text-dark mb-3"><i class="fas fa-align-left me-2 text-primary"></i>Mô tả công việc</h6><div class="bg-white p-3 rounded-4 small text-secondary border" id="mJDesc" style="white-space:pre-line; line-height: 1.6;"></div></div>
+                        <div class="col-md-6"><h6 class="fw-bold text-dark mb-3"><i class="fas fa-clipboard-check me-2 text-success"></i>Yêu cầu ứng viên</h6><div class="bg-white p-3 rounded-4 small text-secondary border" id="mJReq" style="white-space:pre-line; line-height: 1.6;"></div></div>
+                        <div class="col-12" id="mJNoteBox"><div class="alert alert-warning small border-0 shadow-sm m-0"><i class="fas fa-lightbulb me-2"></i><b>Lưu ý:</b> <span id="mJNote"></span></div></div>
+                    </div>
+                </div>
+                <div class="modal-footer border-top p-4 d-block text-center bg-light" style="border-radius: 0 0 20px 20px;">
+                    <button class="btn-login-sv w-100 py-3 fs-6 m-0" onclick="goToLogin()"><i class="fas fa-paper-plane me-2"></i> Đăng nhập để ứng tuyển</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- NẾP GẤP SÁCH ẨN GÓC TRÁI DƯỚI (CỔNG ADMIN) -->
+    <div class="secret-admin-login" onclick="goToStaff()" title="Cổng Dành Cho Cán Bộ / Doanh Nghiệp">
+        <i class="fas fa-user-shield"></i>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <script>
+        // =========================================================================
+        // ĐIỀN LINK WEB APP TỪ GOOGLE SCRIPT CỦA BẠN VÀO ĐÂY SAU KHI DEPLOY MỚI
+        // =========================================================================
+        const GAS_API_URL = "https://script.google.com/macros/s/AKfycbzvuk6j89sRhBpn5eKnnGkUjWYyR2qWJsbV2ebChfiVe8vCRyeZY4yxRUaUYRaUSbhK/exec"; 
+
+        var allJobs = []; 
+        var filteredJobs = []; 
+        var currentTab = 'intern'; 
+        var currentPage = 1; 
+        var jobsPerPage = 10; 
+
+        // Hàm hỗ trợ điều hướng sang Google Apps Script
+        function goToLogin() { window.location.href = GAS_API_URL + "?page=login"; }
+        function goToStaff() { window.location.href = GAS_API_URL + "?page=staff"; }
+
+        $(document).ready(function() {
+            // GỌI API FETCH THAY VÌ google.script.run
+            fetch(GAS_API_URL + "?action=getJobs")
+                .then(response => response.json())
+                .then(res => {
+                    $('#loadingJobs').hide(); 
+                    if(res.announcement) $('#topAnnouncement').html(`<i class="fas fa-bullhorn me-2"></i> ${res.announcement}`);
+                    allJobs = res.all || []; 
+                    
+                    if(res.majors) res.majors.forEach(m => $('#filterMajor').append(`<option value="${m}">${m}</option>`));
+                    applyFilters(); 
+                })
+                .catch(err => {
+                    $('#loadingJobs').html('<div class="text-danger"><i class="fas fa-exclamation-triangle fa-2x mb-3"></i><br>Lỗi kết nối máy chủ! Vui lòng thử lại sau.</div>');
+                });
+
+            $('#searchKeyword, #filterMajor').on('keyup change', applyFilters);
+            $('#btnResetFilter').click(function() { $('#searchKeyword, #filterMajor').val(''); applyFilters(); });
+        });
+
+        window.switchTab = function(type, element) {
+            $('.nav-link').removeClass('active'); $(element).addClass('active');
+            currentTab = type;
+            $('#tabDescription').text(type === 'intern' ? 'Danh sách các chương trình Thực tập' : 'Danh sách Việc làm (Part-time / Full-time)');
+            applyFilters();
+        }
+
+        function applyFilters() {
+            var kw = $('#searchKeyword').val().toLowerCase(); var m = $('#filterMajor').val();
+            filteredJobs = allJobs.filter(j => {
+                var matchKw = j.tieuDe.toLowerCase().includes(kw) || j.tenCongTy.toLowerCase().includes(kw);
+                var matchMajor = (m === "" || (j.nganh || "").includes(m) || j.nganh === "Chung" || j.nganh === "Tất cả ngành");
+                var matchTab = false;
+                let loaiHinh = (j.loaiHinh || "").toLowerCase();
+                if(currentTab === 'intern') matchTab = loaiHinh.includes('thực tập');
+                else matchTab = loaiHinh.includes('việc làm') || loaiHinh.includes('fulltime') || loaiHinh.includes('partime') || loaiHinh.includes('part-time');
+                return matchKw && matchMajor && matchTab;
+            });
+            renderPage(1);
+        }
+
+        window.renderPage = function(page) {
+            currentPage = page; $('#totalJobCount').text(filteredJobs.length + " kết quả");
+            if(filteredJobs.length === 0) return $('#jobContainer').html('<div class="glass-panel text-center py-5 text-muted"><i class="fas fa-search fa-3x opacity-25 mb-3"></i><br>Không có kết quả trong mục này.</div>');
+            
+            var start = (page - 1) * jobsPerPage; var jobsToShow = filteredJobs.slice(start, start + jobsPerPage);
+            var html = '';
+            
+            jobsToShow.forEach(function(job) {
+                let typeText = job.loaiHinh || ""; let typeBadge = typeText.toLowerCase().includes('thực tập') ? 'bg-intern' : 'bg-job';
+                let arrMajors = (job.nganh || "").split(',').map(s => s.trim()); let majorsHtml = '';
+                if (arrMajors.length === 1 && (arrMajors[0].includes("Tất cả") || arrMajors[0] === "")) majorsHtml = `<span class="badge bg-light text-dark border badge-major"><i class="fas fa-globe me-1"></i>Mọi ngành</span>`; 
+                else arrMajors.forEach(m => { if(m) majorsHtml += `<span class="badge bg-light text-primary border badge-major">${m}</span>`; }); 
+
+                let hotStyle = job.isHot ? 'border-left: 5px solid #ef4444; background: linear-gradient(to right, #ffffff, #fef2f2);' : 'border-left: 5px solid transparent;';
+                let originalIndex = allJobs.findIndex(j => j.maJob === job.maJob);
+
+                html += `
+                    <div class="job-card-compact shadow-sm" style="${hotStyle}" onclick="openJobDetail(${originalIndex})">
+                        <div class="d-flex justify-content-between align-items-start mb-2">
+                            <h6 class="fw-bold m-0 text-dark text-truncate" style="font-size: 1rem; max-width: 75%;">${job.tieuDe} ${job.isHot ? '<span class="badge bg-danger ms-2 shadow-sm" style="font-size:0.6rem; vertical-align: middle;">HOT</span>' : ''}</h6>
+                            <span class="text-info fw-bold" style="font-size: 0.8rem; white-space: nowrap;"><i class="fas fa-clock me-1"></i> Hạn: ${job.hanNop}</span>
+                        </div>
+                        <div class="d-flex justify-content-between align-items-end mt-3">
+                            <div class="d-flex flex-wrap gap-2 align-items-center" style="max-width: 90%;">
+                                <span class="fw-bold text-secondary text-truncate me-2" style="font-size: 0.85rem; max-width: 200px;" title="${job.tenCongTy}"><i class="fas fa-building me-1 text-primary"></i> ${job.tenCongTy}</span>
+                                <span class="badge-type ${typeBadge}">${typeText}</span>${majorsHtml}
+                                <span class="text-muted ms-1" style="font-size: 0.8rem;"><i class="fas fa-map-marker-alt text-danger opacity-75 me-1"></i> ${job.diaDiem || "Cập nhật sau"}</span>
+                            </div>
+                            <i class="fas fa-chevron-circle-right text-primary fs-4 opacity-50"></i>
+                        </div>
+                    </div>`;
+            });
+            $('#jobContainer').html(html);
+
+            var tp = Math.ceil(filteredJobs.length / jobsPerPage); var pH = '';
+            if(tp > 1) for (var i = 1; i <= tp; i++) pH += `<button class="page-btn shadow-sm ${currentPage === i ? 'active' : ''}" onclick="renderPage(${i})">${i}</button>`; 
+            $('#paginationContainer').html(pH);
+            if(window.innerWidth < 992) document.getElementById('jobContainer').scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+
+        window.openJobDetail = function(idx) {
+            var job = allJobs[idx];
+            $('#mJTitle').text(job.tieuDe); $('#mJCty').html(`<i class="fas fa-building me-2"></i>${job.tenCongTy}`); 
+            $('#mJLoc').text(job.diaDiem || "Cập nhật sau"); $('#mJSal').text(job.mucLuong || "Thỏa thuận"); 
+            $('#mJDead').text(job.hanNop); $('#mJType').text(job.loaiHinh);
+            $('#mJDesc').text(job.moTa || "Chưa cập nhật mô tả."); $('#mJReq').text(job.yeuCau || "Chưa cập nhật yêu cầu.");
+            if(job.luuY) { $('#mJNote').text(job.luuY); $('#mJNoteBox').removeClass('d-none'); } else $('#mJNoteBox').addClass('d-none'); 
+            new bootstrap.Modal(document.getElementById('modalJobDetail')).show();
+        }
+    </script>
 </body>
 </html>
